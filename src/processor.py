@@ -6,7 +6,6 @@ from typing import Dict
 class ScoringService:
     dfs: Dict[str, pd.DataFrame] = {}
     codes: list = []
-    dataset_base_labels = ['prices', 'stock_list', 'options_spec', 'stock_fin_spec', 'stock_list_spec', 'stock_price_spec', 'trades_spec']
 
     @classmethod
     def get_input_dirs(cls) -> dict:
@@ -37,7 +36,7 @@ class ScoringService:
             cls.dfs = {}
         for key, value in input_dirs.items():
             if debug:
-                if key in cls.dataset_base_labels:
+                if key in ['prices', 'stock_list', 'options_spec', 'stock_fin_spec', 'stock_list_spec', 'stock_price_spec', 'trades_spec']:
                     cls.dfs[key] = pd.read_csv(value)
                 else:
                     continue
@@ -52,7 +51,7 @@ class ScoringService:
 
     @classmethod
     def merge_main_and_sup_file(cls):
-        for label in cls.dataset_base_labels:
+        for label in ['prices', 'prices_sec', 'fins', 'options', 'trades']:
             label_main = label + '_main'
             label_sup = label + '_sup'
             df_merged = pd.concat([cls.dfs[label_main], cls.dfs[label_sup]])
